@@ -1,0 +1,53 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: dressshop-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: change_this_root_password
+      MYSQL_DATABASE: dressshop
+      MYSQL_USER: shopuser
+      MYSQL_PASSWORD: change_this_shop_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [shop-network]
+
+  backend:
+    build: ./backend
+    container_name: dressshop-backend
+    restart: unless-stopped
+    environment:
+      DB_HOST: db
+      DB_PORT: "3306"
+      DB_NAME: dressshop
+      DB_USER: shopuser
+      DB_PASSWORD: change_this_shop_password
+      FLASK_DEBUG: "false"
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "5000:5000"
+    networks: [shop-network]
+
+  frontend:
+    build: ./frontend
+    container_name: dressshop-frontend
+    restart: unless-stopped
+    depends_on: [backend]
+    ports:
+      - "8081:80"
+    networks: [shop-network]
+
+volumes:
+  mysql_data:
+
+networks:
+  shop-network:
+    driver: bridge

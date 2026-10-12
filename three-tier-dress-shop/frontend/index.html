@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DressBloom | Dress Shop</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#">Dress<span>Bloom</span></a>
+    <nav><a href="#catalog">Shop dresses</a><a href="#checkout">Checkout</a></nav>
+    <button id="cart-jump" class="cart-button">Cart <span id="cart-count">0</span></button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">THE EVERYDAY EDIT</p>
+        <h1>Find a dress<br>that feels like <em>you.</em></h1>
+        <p>Easy-to-wear styles for everyday moments and special occasions.</p>
+        <a class="primary-link" href="#catalog">Explore collection</a>
+      </div>
+      <div class="hero-image" role="img" aria-label="Fashion collection"></div>
+    </section>
+
+    <section id="catalog" class="catalog section-wrap">
+      <div class="section-heading">
+        <div><p class="eyebrow">CURATED FOR YOU</p><h2>Our collection</h2></div>
+        <label class="filter-label">Category
+          <select id="category-filter">
+            <option value="">All dresses</option><option value="Casual">Casual</option><option value="Party">Party</option>
+          </select>
+        </label>
+      </div>
+      <p id="catalog-status" class="status" aria-live="polite">Loading dresses…</p>
+      <div id="products" class="product-grid"></div>
+    </section>
+
+    <section id="checkout" class="checkout section-wrap">
+      <div><p class="eyebrow">ALMOST YOURS</p><h2>Your cart</h2><p class="muted">Review your items before placing your demo order.</p>
+        <div id="cart-items" class="cart-items"><p>Your cart is empty.</p></div>
+        <div class="total-row"><span>Total</span><strong id="cart-total">₹0.00</strong></div>
+      </div>
+      <form id="order-form" class="order-form">
+        <h3>Checkout details</h3>
+        <label>Full name<input name="customer_name" maxlength="120" required placeholder="Your name"></label>
+        <label>Email address<input name="customer_email" type="email" maxlength="190" required placeholder="you@example.com"></label>
+        <button class="primary-button" type="submit">Place demo order</button>
+        <p class="muted small">Demo only: no payment is collected.</p>
+        <p id="order-status" class="status" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer><a class="brand" href="#">Dress<span>Bloom</span></a><p>Learning project · Three-tier web application</p></footer>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+pipeline {
+  agent any
+
+  options {
+    timestamps()
+    disableConcurrentBuilds()
+  }
+
+  environment {
+    COMPOSE_FILE = 'docker-compose.yml'
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Validate files') {
+      steps {
+        sh 'test -f backend/app.py'
+        sh 'test -f frontend/index.html'
+        sh 'test -f database/init.sql'
+      }
+    }
+
+    stage('Build containers') {
+      steps {
+        sh 'docker compose build'
+      }
+    }
+
+    stage('Deploy to this Jenkins host') {
+      steps {
+        sh 'docker compose up -d'
+      }
+    }
+
+    stage('Smoke test') {
+      steps {
+        sh 'sleep 5'
+        sh 'curl --fail http://localhost:8080/api/health'
+      }
+    }
+  }
+
+  post {
+    always {
+      sh 'docker compose ps || true'
+    }
+  }
+}
